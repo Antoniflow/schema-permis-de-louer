@@ -1,0 +1,189 @@
+{
+  "$schema": "https://specs.frictionlessdata.io/schemas/table-schema.json",
+  "name": "permis-de-louer",
+  "title": "Communes à permis de louer",
+  "description": "Spécification d'un fichier qui recense, commune par commune, l'autorisation préalable de mise en location et la déclaration de mise en location (« permis de louer », code de la construction et de l'habitation, articles L. 634-1 à L. 635-11), avec la source officielle de chaque ligne et sa date de lecture. Une ligne par commune.",
+  "countryCode": "FR",
+  "homepage": "https://github.com/Antoniflow/schema-permis-de-louer",
+  "path": "https://github.com/Antoniflow/schema-permis-de-louer/raw/v0.1.0/schema.json",
+  "resources": [
+    {
+      "title": "Exemple de fichier valide",
+      "path": "https://github.com/Antoniflow/schema-permis-de-louer/raw/v0.1.0/exemple-valide.csv"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Liste des communes à permis de louer (Naistor, data.gouv.fr)",
+      "path": "https://www.data.gouv.fr/datasets/liste-des-communes-a-permis-de-louer-autorisation-prealable-et-declaration-de-mise-en-location"
+    }
+  ],
+  "created": "2026-10-30",
+  "lastModified": "2026-10-30",
+  "version": "v0.1.0",
+  "contributors": [
+    {
+      "title": "Naistor",
+      "email": "contact@naistor.fr",
+      "organisation": "Naistor",
+      "role": "author"
+    }
+  ],
+  "fields": [
+    {
+      "name": "code_departement",
+      "title": "Code du département",
+      "description": "Code officiel du département (01 à 95, 2A, 2B, 971 à 976).",
+      "type": "string",
+      "example": "59",
+      "constraints": {
+        "required": true,
+        "pattern": "^(0[1-9]|[1-8][0-9]|9[0-5]|2A|2B|97[1-6])$"
+      }
+    },
+    {
+      "name": "departement",
+      "title": "Nom du département",
+      "description": "Nom officiel du département (Code officiel géographique).",
+      "type": "string",
+      "example": "Nord",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "code_insee",
+      "title": "Code INSEE de la commune",
+      "description": "Code officiel géographique de la commune, sur 5 caractères.",
+      "type": "string",
+      "example": "59512",
+      "constraints": {
+        "required": true,
+        "pattern": "^([013-9][0-9]|2[AB1-9])[0-9]{3}$"
+      }
+    },
+    {
+      "name": "commune",
+      "title": "Nom de la commune",
+      "description": "Nom officiel de la commune (Code officiel géographique).",
+      "type": "string",
+      "example": "Roubaix",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "regime",
+      "title": "Régime",
+      "description": "« autorisation » : autorisation préalable de mise en location (CCH, art. L. 635-1 et suivants), demandée avant la signature du bail ; « declaration » : déclaration de mise en location (CCH, art. L. 634-1 et suivants), dans les 15 jours qui suivent la signature ; « les_deux » : l'un ou l'autre selon le secteur.",
+      "type": "string",
+      "example": "autorisation",
+      "constraints": {
+        "required": true,
+        "enum": [
+          "autorisation",
+          "declaration",
+          "les_deux"
+        ]
+      }
+    },
+    {
+      "name": "zone",
+      "title": "Étendue",
+      "description": "« commune » quand la décision couvre toute la commune ; « secteurs » quand elle vise certains quartiers, rues ou immeubles, ou quand la source ne précise pas.",
+      "type": "string",
+      "example": "secteurs",
+      "constraints": {
+        "required": true,
+        "enum": [
+          "commune",
+          "secteurs"
+        ]
+      }
+    },
+    {
+      "name": "secteurs",
+      "title": "Secteurs concernés",
+      "description": "Les secteurs, rues, immeubles ou conditions, tels que la source les décrit. Vide si la source ne les donne pas.",
+      "type": "string",
+      "example": "Quartiers Épeule, Alouette et Trichon"
+    },
+    {
+      "name": "date_entree_en_vigueur",
+      "title": "Date d'entrée en vigueur",
+      "description": "Date d'entrée en vigueur donnée par la source (premier secteur s'il y en a plusieurs). Vide si la source ne la donne pas ; jamais calculée.",
+      "type": "date",
+      "example": "2020-01-01"
+    },
+    {
+      "name": "collectivite",
+      "title": "Collectivité",
+      "description": "Commune ou établissement public de coopération intercommunale qui a délibéré ou qui instruit les demandes.",
+      "type": "string",
+      "example": "Métropole européenne de Lille",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "source_libelle",
+      "title": "Nom de la source",
+      "description": "Nom de la source lue (délibération, page de la commune, de l'intercommunalité, de l'ADIL ou de l'État).",
+      "type": "string",
+      "example": "Délibération du conseil de la Métropole européenne de Lille",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "source_url",
+      "title": "Adresse de la source",
+      "description": "Adresse de la source lue.",
+      "type": "string",
+      "example": "https://www.lillemetropole.fr/",
+      "format": "uri",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "source_type",
+      "title": "Type de source",
+      "description": "Nature de la source : commune, epci (intercommunalité ou métropole), deliberation, adil, anil ou etat.",
+      "type": "string",
+      "example": "deliberation",
+      "constraints": {
+        "required": true,
+        "enum": [
+          "commune",
+          "epci",
+          "deliberation",
+          "adil",
+          "anil",
+          "etat"
+        ]
+      }
+    },
+    {
+      "name": "source_date",
+      "title": "Date de la source",
+      "description": "Date de publication ou de mise à jour donnée par la source. Vide si elle n'en donne pas.",
+      "type": "date",
+      "example": "2024-10-14"
+    },
+    {
+      "name": "verifie_le",
+      "title": "Date de vérification",
+      "description": "Date à laquelle le producteur a lu la source.",
+      "type": "date",
+      "example": "2026-10-29",
+      "constraints": {
+        "required": true
+      }
+    }
+  ],
+  "primaryKey": "code_insee",
+  "missingValues": [
+    ""
+  ]
+}
